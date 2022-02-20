@@ -174,6 +174,7 @@ final class OutSide {
 	public function includes() {
 		include_once OUTSIDE_ABSPATH . 'includes/outside-functions.php';
 		include_once OUTSIDE_ABSPATH . 'includes/class-outside-post.php';
+		include_once OUTSIDE_ABSPATH . 'includes/class-outside-api.php';
 	}
 
 	/**
