@@ -85,6 +85,7 @@ final class OutSide {
 	private function init_hooks() {
 		add_action( 'init', array( $this, 'init' ), 0 );
 		add_action( 'init', array( $this, 'create_block_init') );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
 	/**
@@ -97,6 +98,13 @@ final class OutSide {
 	public function create_block_init() {
 		register_block_type( dirname(OUTSIDE_PLUGIN_FILE) . '/build' );
 	}
+
+	/**
+	* Enqueue scripts.
+	*/
+   public function enqueue_scripts() {
+	   wp_enqueue_style( 'outside-styles', OUTSIDE_URI .'/assets/css/style.css', array(), '1.0.0' );
+   }
 
 	/**
 	 * Wrapper for outside_doing_it_wrong.
@@ -126,6 +134,7 @@ final class OutSide {
 		$this->define( 'OUTSIDE_ABSPATH', dirname( OUTSIDE_PLUGIN_FILE ) . '/' );
 		$this->define( 'OUTSIDE_PLUGIN_BASENAME', plugin_basename( OUTSIDE_PLUGIN_FILE ) );
 		$this->define( 'OUTSIDE_VERSION', $this->version );
+		$this->define( 'OUTSIDE_URI', plugins_url( '/', OUTSIDE_PLUGIN_FILE ) );
 	}
 
 	/**

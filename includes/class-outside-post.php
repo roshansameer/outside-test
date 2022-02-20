@@ -17,6 +17,66 @@ class OutSide_Post {
 	public function __construct() {
 		add_action('init', array( $this, 'register_custom_taxonomy_type') );
 		add_action('init', array( $this, 'register_custom_post_type') );
+		add_shortcode( 'outside', array( $this, 'event_render' ) );
+	}
+
+	/**
+	 * Showing the bubbles
+	 *
+	 * @param [type] $atts
+	 * @return void
+	 */
+	public function event_render( $atts = array() ) {
+
+		$atts = array_change_key_case( (array) $atts, CASE_LOWER );
+
+		// override default attributes with user attributes
+		$outside_atts = shortcode_atts(
+			array(
+				'id'          => '',
+				'event_type' => '',
+				'limit'        => '10',
+			),
+			$atts
+		);
+
+		$post_args = array(
+			'showposts' => -1,
+			'post_type' => 'event',
+			'post_per_page' => $outside_atts['limit'],
+		);
+
+		if( ! empty( $outside_atts['event_type'] ) ) {
+			$post_args['tax_query'] = array(
+				array(
+					'taxonomy' => 'event_type',
+					'field' => 'slug',
+					'terms' => $outside_atts['event_type'],
+				),
+			);
+		}
+
+		$query = new WP_Query( $post_args );
+
+		$output = '<div class="outside-post-wrapper"><div class="category-posts-container">';
+
+		if ( ! empty( $query->posts) ) {
+			foreach ($query->posts as $key => $post) {
+				$output .= '<div class="category-post-item"><div class="category-single-post"><div class="cat-post-img-wrap">';
+				$feature_img = get_the_post_thumbnail_url( $post->ID );
+				if ( $feature_img ) {
+					$output .= '<a href="'.esc_url(get_permalink( $post->ID )).'"><img src="'.$feature_img.'" alt=""></a>';
+				} else {
+					$output .= '<a href="'.esc_url(get_permalink( $post->ID )).'"><img src="https://images.unsplash.com/photo-1638913662539-46e7ccd6d912?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt=""></a>';
+				}
+				$output .= '</div><h2 class="cat-post-title"><a href="#">'.$post->post_title.'</a></h2></div></div>';
+			}
+		}
+
+		$output .= '</div></div>';
+
+		return $output;
+
 	}
 
 	/**
