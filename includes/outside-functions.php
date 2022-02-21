@@ -44,18 +44,19 @@ function outside_doing_it_wrong( $function, $message, $version ) {
 }
 
 // Pagination Starts here
-function wpbeginner_numeric_posts_nav() {
+function outside_pagination() {
 
     if( is_singular() )
-        return;
+	    return;
 
     global $wp_query;
 
     /** Stop execution if there's only 1 page */
-    if( $wp_query->max_num_pages <= 1 )
-        return;
+if( $wp_query->max_num_pages <= 1 )
+		return;
 
     $paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+
     $max   = intval( $wp_query->max_num_pages );
 
     /** Add current page to the array */

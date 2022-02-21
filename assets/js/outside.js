@@ -17,7 +17,12 @@
 		*
 		*/
 		bindUIActions: function() {
-			$(document).on('change', '.outside-event-type', function(e) {
+			$(document).ready(function() {
+				$('.outside-month-filter, .outside-event-type-filter').select2({
+					width: 'resolve'
+				});
+			});
+			$(document).on('change', '#outside_event_filter', function(e) {
 				OutSide.filterByEventType(this, e);
 			});
 	   },
@@ -38,7 +43,7 @@
 				data: data,
 				type: 'POST',
 				success: function(response) {
-					console.log( response );
+					$('.category-posts-container').html( response.data.posts );
 				}
 			});
 	   },

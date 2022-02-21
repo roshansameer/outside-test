@@ -53,16 +53,17 @@ class OutSide_Post {
 		$categories = get_categories('taxonomy=event_type&type=event');
 
 		$output = '<div class="filter-wrapper">';
-		$output .= '<div class="month-filter"><h4>'.__('Filter by month','outside').'</h4>';
+		// <!-- $output .= '<div class="month-filter"><h4>'.__('Filter by month','outside').'</h4>'; -->
+		$output .= '<div class="month-filter"><label for="outside_month_filter">'.__("Filter By Month","outside").'<select id="outside_month_filter" class="outside-month-filter" multiple="multiple" style="width: 100%">';
 			foreach ($months as $key => $month) {
-				$output .= '<input type="checkbox" id="'.$key.'" value="'.$key.'"><label for="'.$key.'">'.$month.'</label></br>';
+				$output .= '<option value="'.$key.'">'.$month.'</option>';
 			}
 
-		$output .='</div><div class"event-type-filter"><h4>'.__('Filter by Event Type','outside').'</h4>';
+		$output .='</select></label></div></br><div class"event-type-filter"><label for="outside_event_filter">'.__("Filter By Event Type","outside").'<select id="outside_event_filter" class="outside-event-type-filter" multiple="multiple" style="width: 100%">';
 			foreach ($categories as $key => $category) {
-				$output .= '<input class="outside-event-type" type="checkbox" id="'.$category->term_id.'" value="'.$category->term_id.'"><label for="'.$category->term_id.'">'.$category->name.'</label></br>';
+				$output .= '<option value="'.$category->term_id.'">'.$category->name.'</option>';
 			}
-		$output .= '</div></div>';
+		$output .= '</select></label></div>';
 
 		return $output;
 	}
@@ -137,6 +138,8 @@ class OutSide_Post {
 			'menu_icon' => 'dashicons-book',
 			'supports' => ['title', 'editor', 'thumbnail', 'author', 'custom-fields'],
 			'show_in_rest' => true,
+			'query_var' =>  true,
+			'capability_type' =>  'page',
 			'rewrite' => ['slug' => 'event'],
 			'taxonomies' => ['event_type'],
 			'labels' => [

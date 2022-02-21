@@ -17,10 +17,14 @@ class OutSide_API {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'add_endpoints' ), 0 );
-		if ( ! is_admin() ) {
 			add_filter('template_include',array( $this, 'event_template_include') );
-			add_filter('request', array( $this, 'outside_request') );
-		}
+			// add_filter('request', array( $this, 'outside_request') );
+			add_filter('query_vars', array( $this, 'outside_query_vars') );
+	}
+
+	public function outside_query_vars( $query_vars ) {
+		$query_vars[] = 'outside-events';
+		return $query_vars;
 	}
 
 	/**
@@ -39,7 +43,9 @@ class OutSide_API {
 	 * Register Custom Endpoint.
 	 */
 	public function add_endpoints(){
-		add_rewrite_endpoint( 'outside-events', EP_PERMALINK );
+		// add_rewrite_endpoint( 'outside-events', EP_PERMALINK );
+		add_rewrite_rule( 'outside-events/([a-z0-9-]+)[/]?$', 'index.php?outside-events=$matches[1]', 'top' );
+
 	}
 
 	/**
@@ -48,10 +54,16 @@ class OutSide_API {
 	 * @param [type] $template
 	 */
 	public function event_template_include( $template ) {
-		if ( get_query_var('outside-events') && is_singular() ) {
+		global $wp_query;
+
+		if ( array_key_exists( 'outside-events', $wp_query->query_vars ) ) {
 			$template = dirname( OUTSIDE_PLUGIN_FILE ) . '/templates/events-template.php';
 		}
 		return $template;
+		// if ( get_query_var('outside-events') && is_singular() ) {
+		// 	$template = dirname( OUTSIDE_PLUGIN_FILE ) . '/templates/events-template.php';
+		// }
+		// return $template;
 	}
 }
 

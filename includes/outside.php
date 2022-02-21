@@ -104,7 +104,9 @@ final class OutSide {
 	*/
    public function enqueue_scripts() {
 	   wp_enqueue_style( 'outside-styles', OUTSIDE_URI .'/assets/css/style.css', array(), '1.0.0' );
+	   wp_enqueue_style( 'outside-select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css', array(),'1.0.0' );
 
+	   wp_register_script( 'outside_select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', array('jquery'), '1.0.0', true );
 	   wp_register_script( 'outside_js', OUTSIDE_URI .'/assets/js/outside.js', array('jquery'), '1.0.0', true );
 	   wp_localize_script(
 		'outside_js',
@@ -116,6 +118,7 @@ final class OutSide {
 		);
 
 		wp_enqueue_script( 'outside_js' );
+		wp_enqueue_script( 'outside_select2' );
 
    }
 

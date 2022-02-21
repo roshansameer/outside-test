@@ -20,7 +20,7 @@
 		<?php } ?>
 		</div><h2 class="cat-post-title"><a href="#"><?php the_title(); ?></a></h2></div></div>
 	<?php endwhile; endif; ?>
-   <?php wpbeginner_numeric_posts_nav(); ?>
+   <?php outside_pagination(); ?>
    <?php wp_reset_query(); ?>
 </div>
 </div>
