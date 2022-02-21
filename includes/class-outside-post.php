@@ -54,12 +54,13 @@ class OutSide_Post {
 
 		$output = '<div class="filter-wrapper">';
 		// <!-- $output .= '<div class="month-filter"><h4>'.__('Filter by month','outside').'</h4>'; -->
-		$output .= '<div class="month-filter"><label for="outside_month_filter">'.__("Filter By Month","outside").'<select id="outside_month_filter" class="outside-month-filter" multiple="multiple" style="width: 100%">';
-			foreach ($months as $key => $month) {
-				$output .= '<option value="'.$key.'">'.$month.'</option>';
-			}
+		// $output .= '<div class="month-filter"><label for="outside_month_filter">'.__("Filter By Month","outside").'<select id="outside_month_filter" class="outside-month-filter" multiple="multiple" style="width: 100%">';
+		// 	foreach ($months as $key => $month) {
+		// 		$output .= '<option value="'.$key.'">'.$month.'</option>';
+		// 	}
 
-		$output .='</select></label></div></br><div class"event-type-filter"><label for="outside_event_filter">'.__("Filter By Event Type","outside").'<select id="outside_event_filter" class="outside-event-type-filter" multiple="multiple" style="width: 100%">';
+		// $output .='</select></label></div></br>';
+		$output .= '<div class"event-type-filter"><label for="outside_event_filter">'.__("Filter By Event Type","outside").'<select id="outside_event_filter" class="outside-event-type-filter" multiple="multiple" style="width: 100%">';
 			foreach ($categories as $key => $category) {
 				$output .= '<option value="'.$category->term_id.'">'.$category->name.'</option>';
 			}
