@@ -18,12 +18,59 @@ class OutSide_Post {
 		add_action('init', array( $this, 'register_custom_taxonomy_type') );
 		add_action('init', array( $this, 'register_custom_post_type') );
 		add_shortcode( 'outside', array( $this, 'event_render' ) );
+		add_shortcode( 'outside_filter_event', array( $this, 'event_filter' ) );
+	}
+
+	/**
+	 * Event Filter
+	 *
+	 * @param array $atts
+	 */
+	public function event_filter($atts = array() ) {
+		$months = array(
+			'january' => 'January',
+			'febuary' => 'Febuary',
+			'march' => 'March',
+			'april' => 'April',
+			'may' => 'May',
+			'june' => 'June',
+			'july' => 'July',
+			'august' => 'August',
+			'septermber' => 'September',
+			'october' => 'October',
+			'november' => 'November',
+			'december' => 'December'
+
+		);
+		$args = array(
+			'type' => get_post_type(),
+			'orderby' => 'name',
+			'order' => 'ASC'
+		);
+		$tags = get_tags($args);
+
+
+		$categories = get_categories('taxonomy=event_type&type=event');
+
+		$output = '<div class="filter-wrapper">';
+		$output .= '<div class="month-filter"><h4>'.__('Filter by month','outside').'</h4>';
+			foreach ($months as $key => $month) {
+				$output .= '<input type="checkbox" id="'.$key.'" value="'.$key.'"><label for="'.$key.'">'.$month.'</label></br>';
+			}
+
+		$output .='</div><div class"event-type-filter"><h4>'.__('Filter by Event Type','outside').'</h4>';
+			foreach ($categories as $key => $category) {
+				$output .= '<input class="outside-event-type" type="checkbox" id="'.$category->term_id.'" value="'.$category->term_id.'"><label for="'.$category->term_id.'">'.$category->name.'</label></br>';
+			}
+		$output .= '</div></div>';
+
+		return $output;
 	}
 
 	/**
 	 * Showing the bubbles
 	 *
-	 * @param [type] $atts
+	 * @param array $atts
 	 * @return void
 	 */
 	public function event_render( $atts = array() ) {

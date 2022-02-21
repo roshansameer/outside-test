@@ -104,6 +104,19 @@ final class OutSide {
 	*/
    public function enqueue_scripts() {
 	   wp_enqueue_style( 'outside-styles', OUTSIDE_URI .'/assets/css/style.css', array(), '1.0.0' );
+
+	   wp_register_script( 'outside_js', OUTSIDE_URI .'/assets/js/outside.js', array('jquery'), '1.0.0', true );
+	   wp_localize_script(
+		'outside_js',
+		'outside_params',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
+			'ajax_nonce' => wp_create_nonce( 'process-ajax-nonce' ),
+			)
+		);
+
+		wp_enqueue_script( 'outside_js' );
+
    }
 
 	/**
@@ -175,6 +188,7 @@ final class OutSide {
 		include_once OUTSIDE_ABSPATH . 'includes/outside-functions.php';
 		include_once OUTSIDE_ABSPATH . 'includes/class-outside-post.php';
 		include_once OUTSIDE_ABSPATH . 'includes/class-outside-api.php';
+		include_once OUTSIDE_ABSPATH . 'includes/class-outside-ajax.php';
 	}
 
 	/**
