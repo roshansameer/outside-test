@@ -18,11 +18,17 @@
 		*/
 		bindUIActions: function() {
 			$(document).ready(function() {
-				$('.outside-month-filter, .outside-event-type-filter').select2({
+				$('.outside-event-type-filter').select2({
 					width: 'resolve'
 				});
 			});
 			$(document).on('change', '#outside_event_filter', function(e) {
+				OutSide.filterByEventType(this, e);
+			});
+			$(document).on('change', '#outside_month_filter', function(e) {
+				OutSide.filterByEventType(this, e);
+			});
+			$(document).on('change', '#outside_tag_filter', function(e) {
 				OutSide.filterByEventType(this, e);
 			});
 	   },
@@ -31,11 +37,15 @@
 			e.preventDefault();
 
 			var $this    = $(el),
-				tax_id = $this.val();
+				tax_id = $('#outside_event_filter').val();
+				month  = $('#outside_month_filter').val();
+				tag    = $('#outside_tag_filter').val();
 
 			var data =  {
 				action  : 'outside_filter_event_type',
-				id      : tax_id,
+				tax_ids : tax_id,
+				month   : month,
+				tag     : tag,
 				security: outside_params.ajax_nonce
 			}
 			$.ajax({

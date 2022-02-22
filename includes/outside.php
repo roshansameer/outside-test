@@ -84,7 +84,7 @@ final class OutSide {
 	 */
 	private function init_hooks() {
 		add_action( 'init', array( $this, 'init' ), 0 );
-		add_action( 'init', array( $this, 'create_block_init') );
+		add_action( 'init', array( $this, 'create_block_init' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
@@ -96,31 +96,31 @@ final class OutSide {
 	 * @see https://developer.wordpress.org/reference/functions/register_block_type/
 	 */
 	public function create_block_init() {
-		register_block_type( dirname(OUTSIDE_PLUGIN_FILE) . '/build' );
+		register_block_type( dirname( OUTSIDE_PLUGIN_FILE ) . '/build' );
 	}
 
 	/**
-	* Enqueue scripts.
-	*/
-   public function enqueue_scripts() {
-	   wp_enqueue_style( 'outside-styles', OUTSIDE_URI .'/assets/css/style.css', array(), '1.0.0' );
-	   wp_enqueue_style( 'outside-select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css', array(),'1.0.0' );
+	 * Enqueue scripts.
+	 */
+	public function enqueue_scripts() {
+		wp_enqueue_style( 'outside-styles', OUTSIDE_URI . '/assets/css/style.css', array(), '1.0.0' );
+		wp_enqueue_style( 'outside-select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css', array(), '1.0.0' );
 
-	   wp_register_script( 'outside_select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', array('jquery'), '1.0.0', true );
-	   wp_register_script( 'outside_js', OUTSIDE_URI .'/assets/js/outside.js', array('jquery'), '1.0.0', true );
-	   wp_localize_script(
-		'outside_js',
-		'outside_params',
-		array(
-			'ajax_url' => admin_url( 'admin-ajax.php', 'relative' ),
-			'ajax_nonce' => wp_create_nonce( 'process-ajax-nonce' ),
+		wp_register_script( 'outside_select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', array( 'jquery' ), '1.0.0', true );
+		wp_register_script( 'outside_js', OUTSIDE_URI . '/assets/js/outside.js', array( 'jquery' ), '1.0.0', true );
+		wp_localize_script(
+			'outside_js',
+			'outside_params',
+			array(
+				'ajax_url'   => admin_url( 'admin-ajax.php', 'relative' ),
+				'ajax_nonce' => wp_create_nonce( 'process-ajax-nonce' ),
 			)
 		);
 
 		wp_enqueue_script( 'outside_js' );
 		wp_enqueue_script( 'outside_select2' );
 
-   }
+	}
 
 	/**
 	 * Wrapper for outside_doing_it_wrong.

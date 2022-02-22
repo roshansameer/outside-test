@@ -36,20 +36,40 @@ class OUTSIDE_AJAX {
 	public static function event_type() {
 		check_ajax_referer( 'process-ajax-nonce', 'security' );
 
-		$tax_id = isset( $_POST['id'] ) ? wp_unslash( $_POST['id'] ) : '';
+		$tax_id = ! empty( $_POST['tax_ids'] ) ? wp_unslash( $_POST['tax_ids'] ) : array();
+		$month  = ! empty( $_POST['month'] ) ? absint( $_POST['month'] ) : '';
+		$tag    = ! empty( $_POST['tag'] ) ? wp_unslash( $_POST['tag'] ) : '';
 
 		$args = array(
-			'post_type' => 'event',
+			'post_type'   => 'event',
 			'post_status' => 'publish',
 		);
 
-		if( ! empty( $tax_id ) ) {
+		if ( ! empty( $tax_id ) ) {
 			$args['tax_query'] = array(
 				array(
 					'taxonomy' => 'event_type',
-					'field' => 'term_id',
-					'terms' => $tax_id
-				)
+					'field'    => 'term_id',
+					'terms'    => $tax_id,
+				),
+			);
+		}
+
+		if ( ! empty( $tag ) ) {
+			$args['tax_query'] = array(
+				array(
+					'taxonomy' => 'event_tag',
+					'field'    => 'term_id',
+					'terms'    => $tag,
+				),
+			);
+		}
+
+		if ( ! empty( $month ) ) {
+			$args['date_query'] = array(
+				array(
+					'month' => $month,
+				),
 			);
 		}
 
@@ -57,24 +77,24 @@ class OUTSIDE_AJAX {
 
 		$output = '';
 
-		if ( ! empty( $query->posts) ) {
-			foreach ($query->posts as $key => $post) {
-				$output .= '<div class="category-post-item"><div class="category-single-post"><div class="cat-post-img-wrap">';
+		if ( ! empty( $query->posts ) ) {
+			foreach ( $query->posts as $key => $post ) {
+				$output     .= '<div class="category-post-item"><div class="category-single-post"><div class="cat-post-img-wrap">';
 				$feature_img = get_the_post_thumbnail_url( $post->ID );
 				if ( $feature_img ) {
-					$output .= '<a href="'.esc_url(get_permalink( $post->ID )).'"><img src="'.$feature_img.'" alt=""></a>';
+					$output .= '<a href="' . esc_url( get_permalink( $post->ID ) ) . '"><img src="' . $feature_img . '" alt=""></a>';
 				} else {
-					$output .= '<a href="'.esc_url(get_permalink( $post->ID )).'"><img src="https://images.unsplash.com/photo-1638913662539-46e7ccd6d912?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt=""></a>';
+					$output .= '<a href="' . esc_url( get_permalink( $post->ID ) ) . '"><img src="https://images.unsplash.com/photo-1638913662539-46e7ccd6d912?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt=""></a>';
 				}
-				$output .= '</div><h2 class="cat-post-title"><a href="#">'.$post->post_title.'</a></h2></div></div>';
+				$output .= '</div><h2 class="cat-post-title"><a href="#">' . $post->post_title . '</a></h2></div></div>';
 			}
 		} else {
-			$output .= __("No result found.","outside");
+			$output .= __( 'No result found.', 'outside' );
 		}
 
 		wp_reset_postdata();
 
-		wp_send_json_success(array( 'posts' => $output ) );
+		wp_send_json_success( array( 'posts' => $output ) );
 
 	}
 }
