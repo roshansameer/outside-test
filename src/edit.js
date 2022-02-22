@@ -32,7 +32,7 @@ import './editor.scss';
 export default function Edit() {
 	return (
 		<p {...useBlockProps()}>
-			{__('Hello World!!', 'event-slider')}
+			{__('Slider which will show if you have set on the Slick Plugin!', 'event-slider')}
 		</p>
 	);
 }

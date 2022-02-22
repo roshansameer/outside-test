@@ -24,8 +24,6 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 export default function save() {
 	return (
-		<p {...useBlockProps.save()}>
-			{__('Event Slider – hello from the saved content!', 'event-slider')}
-		</p>
+		'[slick-slider /]'
 	);
 }
