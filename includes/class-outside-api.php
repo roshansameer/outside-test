@@ -51,10 +51,6 @@ class OutSide_API {
 			$template = dirname( OUTSIDE_PLUGIN_FILE ) . '/templates/events-template.php';
 		}
 		return $template;
-		// if ( get_query_var('outside-events') && is_singular() ) {
-		// $template = dirname( OUTSIDE_PLUGIN_FILE ) . '/templates/events-template.php';
-		// }
-		// return $template;
 	}
 }
 

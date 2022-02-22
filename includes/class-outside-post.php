@@ -95,9 +95,8 @@ class OutSide_Post {
 		);
 
 		$post_args = array(
-			'showposts'     => -1,
-			'post_type'     => 'event',
-			'post_per_page' => $outside_atts['limit'],
+			'post_type'      => 'event',
+			'posts_per_page' => $outside_atts['limit'],
 		);
 
 		if ( ! empty( $outside_atts['event_type'] ) ) {
@@ -128,6 +127,8 @@ class OutSide_Post {
 		}
 
 		$output .= '</div></div>';
+
+		wp_reset_postdata();
 
 		return $output;
 
